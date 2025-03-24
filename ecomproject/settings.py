@@ -30,9 +30,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['theoakgolf.com', 'https://theoakgolf.com']
+ALLOWED_HOSTS = ['theoakgolf.com', 'https://theoakgolf.com', 'web-production-a3ae.up.railway.app', 'https://web-production-a3ae.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://theoakgolf.com']
+CSRF_TRUSTED_ORIGINS = ['https://theoakgolf.com', 'https://web-production-a3ae.up.railway.app']
 
 
 # Application definition
