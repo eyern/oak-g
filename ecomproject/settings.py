@@ -30,7 +30,7 @@ load_dotenv
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = True
 
 ALLOWED_HOSTS = ['theoakgolf.com', 'https://theoakgolf.com', '127.0.0.1', 'http://127.0.0.1', 'web-production-a3ae.up.railway.app', 'https://web-production-a3ae.up.railway.app']
 
@@ -69,7 +69,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
     'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
 ]
 
