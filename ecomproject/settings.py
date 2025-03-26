@@ -32,9 +32,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['theoakgolf.com', 'https://theoakgolf.com', 'web-production-a3ae.up.railway.app', 'https://web-production-a3ae.up.railway.app']
+ALLOWED_HOSTS = ['theoakgolf.com', 'https://theoakgolf.com', '127.0.0.1', 'http://127.0.0.1', 'web-production-a3ae.up.railway.app', 'https://web-production-a3ae.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://theoakgolf.com', 'https://web-production-a3ae.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-a3ae.up.railway.app']
 
 
 # Application definition
@@ -104,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'PASSWORD': os.environ['DB_PASSWORD'],
         'HOST': 'ballast.proxy.rlwy.net',
         'PORT': '57312',
     }
