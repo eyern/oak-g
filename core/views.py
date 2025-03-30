@@ -216,7 +216,7 @@ def cart_view(request):
 		return render(request, 'core/cart.html', {
 			'cart_data': request.session['cart_data_object'],
 			'totalcartitems': len(request.session['cart_data_object']),
-			'cart_total_amount': cart_total_amount + 350
+			'cart_total_amount': cart_total_amount
 		})
 		
 	else:
