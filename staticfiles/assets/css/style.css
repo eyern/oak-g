@@ -2052,11 +2052,15 @@ ol {
 	color: green;
 }
 .shoping__checkout .intaSendPayButton {
-	display: block;
-	text-align: center;
-	border: green;
-	color: white;
-	background-color: green;
+	display: inline-block;
+	font-size: 14px;
+	padding: 10px 28px 10px;
+	color: #ffffff;
+	text-transform: uppercase;
+	font-weight: 700;
+	background: green;
+	letter-spacing: 2px;
+	border-style: none;
 }
 
 /*---------------------
