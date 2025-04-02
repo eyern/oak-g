@@ -84,12 +84,8 @@ class Product(models.Model):
 	price = models.DecimalField(max_digits=1000, decimal_places=2, default="1.99")
 	old_price = models.DecimalField(max_digits=1000, decimal_places=2, default="2.99")
 
-	specifications = RichTextUploadingField(null=True, blank=True)
 	stock_count = models.PositiveIntegerField(default=10, null=True, blank=True)
 	shipping = models.CharField(max_length=100, default="1", null=True, blank=True)
-	weight = models.CharField(max_length=100, default="0.7", null=True, blank=True)
-	life = models.CharField(max_length=100, default="10", null=True, blank=True)
-	mfd = models.DateTimeField(auto_now_add=False, null=True, blank=True)
 
 	tags = TaggableManager(blank=True)
 	# tags = models.ForeignKey(Tags, on_delete=models.SET_NULL, null=True)
