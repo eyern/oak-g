@@ -4,10 +4,11 @@ from django.db.models import Avg, F, ExpressionWrapper, DecimalField
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from core.models import Product, Category, Vendor, CartOrder, CartOrderItems, \
-ProductImages, ProductReview, Wishlist, Address, ContactUs
-from core.forms import ProductReviewFrom
+from core.models import Product, Category, Vendor, Order, OrderItem, \
+ProductImages, ProductReview, Wishlist, ContactUs, ShippingAddress
+from core.forms import ProductReviewFrom, ShippingForm
 from taggit.models import Tag
+from django.contrib import messages
 
 def index(request):
 	products = Product.objects.filter(product_status='published', featured=True)
@@ -326,6 +327,34 @@ def remove_from_wishlist(request):
 def contact(request):
 	return render(request, 'core/contact.html')
 
+@login_required
+def checkout(request):
+	total_amt=0
+	cart_total_amount=0
+	if 'cart_data_object' in request.session:
+		for product_id, item in request.session['cart_data_object'].items():
+			cart_total_amount += int(item['qty']) * float(item['price'])
+		# Order
+		order=Order.objects.create(
+				user=request.user,
+				total_amt=cart_total_amount
+			)
+		# End
+		return render(request, 'core/checkout.html', {
+			'cart_data': request.session['cart_data_object'],
+			'totalcartitems': len(request.session['cart_data_object']),
+			'cart_total_amount': cart_total_amount
+		})
+
+def billing_info(request):
+	if request.POST:	
+		form = ShippingForm(request.POST)
+		if form.is_valid():
+			form.save()
+			print(request.POST)
+		context = {'form': form}	
+		return render(request, 'core/billing_info.html', context)
+
 def ajax_contact_form(request):
 	name = request.GET['name']
 	email = request.GET['email']
@@ -348,3 +377,8 @@ def about(request):
 
 def success(request):
 	return render(request, 'core/success.html')
+
+def checkout(request):	
+	return render(request, 'core/checkout.html')
+
+

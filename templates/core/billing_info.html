@@ -1,0 +1,148 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Shipping Information{% endblock title %}
+
+{% block content %}
+{% include 'partials/hero-section.html' %}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/img/breadcrumb-2.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Delivery Details</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{% url 'core:index' %}">Home</a>
+                        <span class="breadcrumb__separator"><i class="fa fa-angle-right"></i></span>
+                        <span>Place your order</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+ <!-- Billing Info Area Start -->
+ <section class="billing-info-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Dashboard-Nav  Start-->
+                <div class="dashboard-nav">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#" class="active">Delivery Details</a>
+                            <i class="fas fa-angle-right"></i></li>
+                        <li class="list-inline-item"><a href="#">Complete Payment</a> <i
+                                class="fas fa-angle-right"></i></li>
+                        <li class="list-inline-item"><a href="#" class="mr-0">Order Confirmation</a></li>
+                    </ul>
+                </div>
+                <!-- Dashboard-Nav  End-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-7 order-2 order-lg-1">
+                <div class="payment-method-area">
+                    <h5>AVAILABLE PAYMENT METHODS</h5>
+                    <div class="payment-method d-flex justify-content-between align-items-center flex-wrap">
+                            <a href="#">
+                                <div class="humberger__menu__logo">
+                                    <a href="{% url 'core:index' %}"><img src="{% static './assets/img/mpesa.png' %}" alt=""></a>
+                                </div>
+                            </a>
+                    </div>
+                    <div class="payment-method-area-text text-center">
+                        <p>or</p>
+                        <h6>CASH ON DELIVERY</h6>
+                    </div>
+                </div>
+                <div class="deliver-info-form">
+                    <u><h6>FILL DELIVERY INFORMATION 👇 </h6></u>
+                    <br>
+                    <form method="POST" action="{% url 'billing' %}">
+                        {% csrf_token %}
+                        {{form}}
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form__div">
+                                    <label for="" class="form__label">Full Name</label>
+                                    <input type="text" class="form__input" placeholder="Full Name">                            
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form__div">
+                                    <label for="" class="form__label">Email</label>
+                                    <input type="text" class="form__input" placeholder="Email Address">                    
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form__div">
+                                    <label for="" class="form__label">Address</label>
+                                    <input type="text" class="form__input" placeholder="Address">  
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form__div mb-0">
+                                    <label for="" class="form__label">City/Town</label>
+                                    <input type="text" class="form__input" placeholder="City">                              
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form__div">
+                                    <label for="" class="form__label">Phone Number</label>
+                                    <input type="text" class="form__input" placeholder="Phone Number">                   
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div
+                                class="col-12 d-flex align-items-center justify-content-between bottom flex-wrap">
+                                <a href="{% url 'core:products-list' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                    CONTINUE SHOPPING</a>
+                                <button class="btn bg-primary mt-0" type="submit">CONFIRM ORDER</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5 order-1 order-lg-2">
+                <div class="card-price">
+                    <h6>ORDER SUMMARY</h6><br>
+                    <div class="card-price-list d-flex justify-content-between align-items-center">
+                        <div class="item">
+                            <p>SHIPPING FEES</p>
+                        </div>
+                        <div class="price">
+                            <p>FREE</p>
+                        </div>
+                    </div>
+                    <div class="card-price-subtotal d-flex justify-content-between align-items-center">
+                        <div class="total-text">
+                            <p>TOTAL</p>
+                        </div>
+                        <div class="total-price">
+                            <p>ksh{{ cart_total_amount|floatformat:2 }}</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Billing Info Area End -->
+
+{% endblock content %}

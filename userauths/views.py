@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from userauths.models import User
 from userauths.forms import UserRegisterForm
 
+from core.forms import ShippingForm
+from core.models import ShippingAddress
+
 # User = settings.AUTH_USER_MODEL
 
 def register_view(request):

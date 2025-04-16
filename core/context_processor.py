@@ -1,6 +1,6 @@
 import random
-from core.models import Product, Category, Vendor, CartOrder, \
-CartOrderItems, ProductImages, ProductReview, Wishlist, Address
+from core.models import Product, Category, Vendor, Order, \
+OrderItem, ProductImages, ProductReview, Wishlist, ShippingAddress
 from blog.models import Post
 from django.db.models import Min, Max
 from django.contrib import messages

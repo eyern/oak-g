@@ -57,10 +57,10 @@
             <div class="col-lg-6">
                 <div class="shoping__continue">
                     <div class="shoping__discount">
-                        <h5>Discount Codes</h5>
+                        <h5>CASH ON DELIVERY</h5>
                         <form action="#">
-                            <input type="text" placeholder="Enter your coupon code">
-                            <button type="submit" class="site-btn">APPLY COUPON</button>
+                            <input type="text" placeholder="Enter your phone number">
+                            <button type="submit" class="site-btn">PAY ON DELIVERY</button>
                         </form>
                     </div>
                 </div>
@@ -69,8 +69,8 @@
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
                     <ul>
-                        <li>Subtotal <span>ksh{{ cart_total_amount|floatformat:2 }}</span></li>
-                        <li>Total <span>ksh{{ cart_total_amount|floatformat:2 }}</span></li>
+                        <li>SHIPPING FEES <span>FREE</span></li>
+                        <li>TOTAL <span>ksh{{ cart_total_amount|floatformat:2 }}</span></li>
                     </ul>
                     {% if totalcartitems %}
                     <!-- // PAYMENT BUTTON // -->
