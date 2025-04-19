@@ -12,4 +12,11 @@ urlpatterns = [
 
 	# User Account
 	path("account/", views.account, name="account"),
+    
+	#orders
+    path('orders/', views.orders, name='orders'),
+    
+    path('add-address/', views.AddressView.as_view(), name="add-address"),
+    
+    path('remove-address/<int:id>/', views.remove_address, name="remove-address"),
 ]

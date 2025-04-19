@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.conf import settings
@@ -6,8 +6,12 @@ from django.contrib.auth.decorators import login_required
 from userauths.models import User
 from userauths.forms import UserRegisterForm
 
-from core.forms import ShippingForm
-from core.models import ShippingAddress
+from core.forms import AddressForm
+from core.models import Address, Order
+
+from django.contrib import messages
+from django.utils.decorators import method_decorator # for Class Based Views
+from django.views import View
 
 # User = settings.AUTH_USER_MODEL
 
@@ -109,3 +113,40 @@ def account(request):
 		return redirect('userauths:account')	
 
 	return render(request, 'userauths/account.html')
+
+@login_required
+def orders(request):
+    all_orders = Order.objects.filter(user=request.user).order_by('-ordered_date')
+    return render(request, 'core/orders.html', {'orders': all_orders})
+
+@login_required
+def profile(request):
+    addresses = Address.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user)
+    return render(request, 'userauths/account.html', {'addresses':addresses, 'orders':orders})
+
+
+@method_decorator(login_required, name='dispatch')
+class AddressView(View):
+    def get(self, request):
+        form = AddressForm()
+        return render(request, 'userauths/add_address.html', {'form': form})
+
+    def post(self, request):
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            user=request.user
+            locality = form.cleaned_data['locality']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            reg = Address(user=user, locality=locality, city=city, state=state)
+            reg.save()
+            messages.success(request, "New Address Added Successfully.")
+        return redirect('userauths:account')
+
+@login_required
+def remove_address(request, id):
+    a = get_object_or_404(Address, user=request.user, id=id)
+    a.delete()
+    messages.success(request, "Address removed.")
+    return redirect('userauths:account')

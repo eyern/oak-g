@@ -70,8 +70,79 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
+<br>
+<br>
 
-<!-- Account Section Start -->
+<div class="row">
+
+	<div class="col-lg-6">
+	  <div class="card mb-4" id="headings">
+		<div class="card-header">Addresses <span class="float-right"><a href="{% url 'userauths:add-address' %}">Add Address</a></span></div>
+		<div class="card-body">
+		  {% if addresses %}
+			  {% for address in addresses %}
+				  <h4 class="mb-3">Address {{forloop.counter}}</h4> 
+				  
+				  <span class="float-right"><a href="{% url 'userauths:remove-address' address.id %}"><i class="fas fa-trash-alt small text-muted"></i></a></span>
+
+				  <p>
+					  <strong>Locality: </strong>{{address.locality}} <br>
+					  <strong>City / Town: </strong>{{address.city}} <br>
+					  <strong>Phone Number: </strong>{{address.state}} <br>
+				  </p>
+
+				  <hr>
+			  {% endfor %}
+		  {% else %}
+		  <div class="text-danger">
+			Address not Added.
+		  </div>
+		  {% endif %}
+		  
+		</div>
+	  </div>
+	</div>
+
+	<div class="col-lg-6">
+	  <div class="card mb-4" id="tables">
+		<div class="card-header">Orders</div>
+		<div class="card-body">
+		  <table class="table table-hover">
+			<thead>
+			  <tr>
+				<th>#</th>
+				<th>Item</th>
+				<th>Status</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  {% if orders %}
+				{% for order in orders %}
+				  <tr>
+					<td>{{forloop.counter}}</td>
+					<td>{{order.product.title}}</td>
+					<td>
+					  {{order.status}}
+					</td>
+				  </tr>
+				{% endfor %}
+			  {% else %}
+			  <tr>
+				<td class="text-danger" colspan="3">You've not Ordered anything yet.</td>
+			  </tr>
+			  {% endif %}
+			  
+			  
+			</tbody>
+		  </table>
+		  
+		</div>
+	  </div>
+	</div>
+	
+  </div>
+
+  <!-- Account Section Start -->
 <section class="my-5">
 	<div class="container">
 		<!-- <h1 class="mb-5">Account Settings</h1> -->
@@ -304,12 +375,12 @@
 					</div>
 				</div>
 				<div class="tab-pane fade" id="singout" role="tabpanel" aria-labelledby="singout-tab">
-					<h3 class="mb-4">Sing Out</h3>
+					<h3 class="mb-4">Sign Out</h3>
 					<div class="row">
 						
 					</div>
 					<div>
-						<button class="btn btn-primary">Sing Out</button>
+						<button class="btn btn-primary">Sign Out</button>
 					</div>
 				</div>
 			</div>

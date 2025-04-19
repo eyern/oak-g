@@ -84,11 +84,7 @@
             <div class="col-lg-6">
                 <div class="shoping__continue">
                     <div class="shoping__discount">
-                        <h5>CASH ON DELIVERY</h5>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your phone number">
-                            <button type="submit" class="site-btn">PAY ON DELIVERY</button>
-                        </form>
+                        <h5>FOR CASH ON DELIVERY CALL/WHATSAPP 👉 0722-900-442 </h5>
                     </div>
                 </div>
             </div>
@@ -101,7 +97,7 @@
                     </ul>
                     {% if totalcartitems %}
                     <!-- // PAYMENT BUTTON // -->
-                    <button class="intaSendPayButton" data-amount="{{ cart_total_amount|floatformat:2 }}" data-currency="KES" data-email="user@example.com" data-phone_number="254712345678" data-first_name="John" data-last_name="Doe" data-api_ref="INV-12345">Proceed To Pay</button>
+                    <a href="{% url 'core:billing_info' %}" class="primary-btn">PROCEED TO PAY</a>
                     {% endif %}
                 </div>
             </div>
@@ -130,5 +126,28 @@
     });
 </script>
 <!-- Shoping Cart Section End -->
+{% block payment-gateway %}
+        <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR-PAYPAL-CLIENT-ID&currency=KSh"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{cart_total_amount}}'
+                        }
+                    }]
+                });
+            },
+
+
+        }).render('#paypal-button-container');
+    </script>
+      {% endblock payment-gateway %}
 
 {% endblock content %}

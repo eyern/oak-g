@@ -55,15 +55,24 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="shoping__continue">
-                    <div class="shoping__discount">
-                        <h5>CASH ON DELIVERY</h5>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your phone number">
-                            <button type="submit" class="site-btn">PAY ON DELIVERY</button>
-                        </form>
-                    </div>
-                </div>
+                <form action="{% url 'core:checkout' %}" id="myform">
+
+                    {% if addresses %}
+                      {% for address in addresses %}
+                        <div class="mb-3">
+                        <input type="radio" name="address" value="{{address.id}}"> <strong>Address {{forloop.counter}}</strong> <br>
+                        ( {{address.locality}}, {{address.city}}, {{address.state}} )
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+
+                    <!-- Set up a container element for the button -->
+                    <div class="text-end" id="paypal-button-container"></div>
+
+                    {% comment %} For Cash on Delivery {% endcomment %}
+                    <button type="submit" class="site-btn" type="submit">Cash on Delivery</button>
+
+                  </form>
             </div>
             <div class="col-lg-6">
                 <div class="shoping__checkout">
@@ -74,7 +83,7 @@
                     </ul>
                     {% if totalcartitems %}
                     <!-- // PAYMENT BUTTON // -->
-                    <button class="intaSendPayButton" data-amount="{{ cart_total_amount|floatformat:2 }}" data-currency="KES" data-email="user@example.com" data-phone_number="254712345678" data-first_name="John" data-last_name="Doe" data-api_ref="INV-12345">PROCEED TO PAY</button>
+                    <a href="{% url 'core:billing_info' %}" class="primary-btn">PROCEED TO PAY</a>
                     {% endif %}
                 </div>
             </div>

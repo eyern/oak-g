@@ -5,6 +5,15 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
 from shortuuid.django_fields import ShortUUIDField
 
+STATUS_CHOICES = (
+    ('Pending', 'Pending'),
+    ('Accepted', 'Accepted'),
+    ('Packed', 'Packed'),
+    ('On The Way', 'On The Way'),
+    ('Delivered', 'Delivered'),
+    ('Cancelled', 'Cancelled')
+)
+
 STATUS_CHOICE = (
 	("process", "Processing"),
 	("shipped", "Shipped"),
@@ -55,7 +64,7 @@ class Vendor(models.Model):
 	description = RichTextUploadingField(null=True, blank=True, default="Vendor Description")
 
 	address = models.CharField(max_length=100, default="123 Main Street")
-	contact = models.CharField(max_length=100, default="+123 (456) 789")
+	contact = models.CharField(max_length=100, default="+254...")
 	email = models.CharField(max_length=100, default="example@mail.com")
 
 	user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -123,40 +132,27 @@ class ProductImages(models.Model):
 	class Meta:
 		verbose_name_plural = 'Product Images'
 
+# Shipping Address
+class Address(models.Model):
+    user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE)
+    locality = models.CharField(max_length=150, verbose_name="Nearest Location")
+    city = models.CharField(max_length=150, verbose_name="City / Town")
+    state = models.CharField(max_length=150, verbose_name="Phone Number")
 
+    def __str__(self):
+        return self.locality
 
-####### Cart, Order #######
-
-
-
-# Create Order Model
 class Order(models.Model):
-	# Foreign Key
-	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-	full_name = models.CharField(max_length=250)
-	email = models.EmailField(max_length=250)
-	shipping_address = models.TextField(max_length=15000)
-	amount_paid = models.DecimalField(max_digits=7, decimal_places=2)
-	date_ordered = models.DateTimeField(auto_now_add=True)	
-	shipped = models.BooleanField(default=False)
-	date_shipped = models.DateTimeField(blank=True, null=True)
-	
-	def __str__(self):
-		return f'Order - {str(self.id)}'
-
-# Create Order Items Model
-class OrderItem(models.Model):
-	# Foreign Keys
-	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
-	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-
-	quantity = models.PositiveBigIntegerField(default=1)
-	price = models.DecimalField(max_digits=7, decimal_places=2)
-
-
-	def __str__(self):
-		return f'Order Item - {str(self.id)}'
+    user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, verbose_name="Shipping Address", null=True, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name="Product", null=True, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(verbose_name="Quantity", null=True)
+    ordered_date = models.DateTimeField(auto_now_add=True, null=True, verbose_name="Ordered Date")
+    status = models.CharField(
+        choices=STATUS_CHOICES,
+        max_length=50,
+        default="Pending"
+        )
 
 
 
@@ -190,22 +186,6 @@ class Wishlist(models.Model):
 
 	def __str__(self):
 		return self.product.title
-
-class ShippingAddress(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-	shipping_full_name = models.CharField(max_length=255)
-	shipping_email = models.CharField(max_length=255)
-	shipping_address1 = models.CharField(max_length=255)
-	phone_no = models.CharField(max_length=255)
-	shipping_city = models.CharField(max_length=255)
-
-
-	# Don't pluralize address
-	class Meta:
-		verbose_name_plural = "Shipping Address"
-
-	def __str__(self):
-		return f'Shipping Address - {str(self.id)}'
 
 ####### Contact, Profile #######
 
