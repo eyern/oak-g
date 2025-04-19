@@ -55,24 +55,11 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <form action="{% url 'core:checkout' %}" id="myform">
-
-                    {% if addresses %}
-                      {% for address in addresses %}
-                        <div class="mb-3">
-                        <input type="radio" name="address" value="{{address.id}}"> <strong>Address {{forloop.counter}}</strong> <br>
-                        ( {{address.locality}}, {{address.city}}, {{address.state}} )
-                        </div>
-                      {% endfor %}
-                    {% endif %}
-
-                    <!-- Set up a container element for the button -->
-                    <div class="text-end" id="paypal-button-container"></div>
-
-                    {% comment %} For Cash on Delivery {% endcomment %}
-                    <button type="submit" class="site-btn" type="submit">Cash on Delivery</button>
-
-                  </form>
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>FOR CASH ON DELIVERY CALL/WHATSAPP 👉 0722-900-442 </h5>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-6">
                 <div class="shoping__checkout">
