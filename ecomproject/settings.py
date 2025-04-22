@@ -34,7 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['theoakgolf.com', 'https://theoakgolf.com', '127.0.0.1', 'http://127.0.0.1', 'web-production-a3ae.up.railway.app', 'https://web-production-a3ae.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://theoakgolf.com']
+CSRF_TRUSTED_ORIGINS = ['https://theoakgolf.com', 'https://web-production-a3ae.up.railway.app']
 
 
 # Application definition
