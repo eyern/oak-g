@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Product, Category, Vendor, Order, \
+from core.models import Product, Category, Vendor, CartOrder, CartOrderItems, \
 ProductImages, ProductReview, Wishlist, Address, ContactUs
 
 class ProductImagesAdmin(admin.TabularInline):
@@ -15,12 +15,11 @@ class CategotyAdmin(admin.ModelAdmin):
 class VendorAdmin(admin.ModelAdmin):
 	list_display = ['title', 'vendor_image', 'vid']
 
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'quantity', 'status', 'ordered_date')
-    list_editable = ('quantity', 'status')
-    list_filter = ('status', 'ordered_date')
-    list_per_page = 20
-    search_fields = ('user', 'product')
+class CartOrderAdmin(admin.ModelAdmin):
+	list_display = ['user', 'total_amt', 'paid_status', 'order_date', 'product_status']
+
+class CartOrderItemsAdmin(admin.ModelAdmin):
+	list_display = ['order', 'invoice_no', 'item', 'image', 'qty', 'price', 'total']
 
 class ProductReviewAdmin(admin.ModelAdmin):
 	list_display = ['user', 'product', 'rating']
@@ -29,10 +28,7 @@ class WishlistAdmin(admin.ModelAdmin):
 	list_display = ['user', 'product', 'date']
 
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ('user', 'locality', 'city', 'state')
-    list_filter = ('city', 'state')
-    list_per_page = 10
-    search_fields = ('locality', 'city', 'state')
+	list_display = ['user', 'address', 'status']
 
 class ContactUsAdmin(admin.ModelAdmin):
 	list_display = ['name', 'email']
@@ -40,7 +36,8 @@ class ContactUsAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategotyAdmin)
 admin.site.register(Vendor, VendorAdmin)
-admin.site.register(Order, OrderAdmin)
+admin.site.register(CartOrder, CartOrderAdmin)
+admin.site.register(CartOrderItems, CartOrderItemsAdmin)
 admin.site.register(ProductReview, ProductReviewAdmin)
 admin.site.register(Wishlist, WishlistAdmin)
 admin.site.register(Address, AddressAdmin)

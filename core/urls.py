@@ -65,9 +65,6 @@ urlpatterns = [
 	#payment success
     path('success/', views.success, name='success'),
     
-	#checkout page
-    path('checkout/', views.checkout, name='checkout'),
-    
 	#billing info
     path('billing_info/', views.billing_info, name='billing_info'),
     

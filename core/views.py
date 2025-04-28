@@ -1,16 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.db.models import Avg, F, ExpressionWrapper, DecimalField
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from core.models import Product, Category, Vendor, Order, \
-ProductImages, ProductReview, Wishlist, ContactUs, Address
-from core.forms import ProductReviewFrom, AddressForm
+from core.models import Product, Category, Vendor, CartOrder, CartOrderItems, \
+ProductImages, ProductReview, Wishlist, Address, ContactUs
+from core.forms import ProductReviewFrom
 from taggit.models import Tag
-from django.contrib import messages
-from django.utils.decorators import method_decorator # for Class Based Views
-from django.views import View
 
 def index(request):
 	products = Product.objects.filter(product_status='published', featured=True)
@@ -181,7 +178,6 @@ def filter_product(request):
 	data = render_to_string('core/async/product-list.html', context)
 	return JsonResponse({'data': data})
 
-
 def add_to_cart(request):
 	cart_product = {}
 
@@ -211,7 +207,6 @@ def add_to_cart(request):
 			'totalcartitems':len(request.session['cart_data_object'])
 		})
 
-@login_required
 def cart_view(request):
 	cart_total_amount = 0
 	if 'cart_data_object' in request.session:
@@ -221,13 +216,12 @@ def cart_view(request):
 		return render(request, 'core/cart.html', {
 			'cart_data': request.session['cart_data_object'],
 			'totalcartitems': len(request.session['cart_data_object']),
-			'cart_total_amount': cart_total_amount
+			'cart_total_amount': cart_total_amount + 450
 		})
 		
 	else:
 		return render(request, 'core/cart.html')
 
-@login_required
 def delete_from_cart(request):
 	product_id = str(request.GET['id'])
 	if 'cart_data_object' in request.session:
@@ -244,14 +238,13 @@ def delete_from_cart(request):
 	context = render_to_string('core/async/cart-list.html', {
 			'cart_data': request.session['cart_data_object'],
 			'totalcartitems': len(request.session['cart_data_object']),
-			'cart_total_amount': cart_total_amount
+			'cart_total_amount': cart_total_amount + 450
 		})
 	return JsonResponse({
 			'data': context,
 			'totalcartitems': len(request.session['cart_data_object']),
 		})
 
-@login_required
 def update_cart(request):
 	product_id = str(request.GET['id'])
 	product_qty = request.GET['qty']
@@ -270,7 +263,7 @@ def update_cart(request):
 	context = render_to_string('core/async/cart-list.html', {
 			'cart_data': request.session['cart_data_object'],
 			'totalcartitems': len(request.session['cart_data_object']),
-			'cart_total_amount': cart_total_amount
+			'cart_total_amount': cart_total_amount + 450
 		})
 	return JsonResponse({
 			'data': context,
@@ -330,30 +323,36 @@ def remove_from_wishlist(request):
 	data = render_to_string('core/async/wishlist-list.html', context)
 	return JsonResponse({'data': data, 'wishlist': qs_json})
 
-def contact(request):
-	return render(request, 'core/contact.html')
-
 @login_required
 def checkout(request):
-	
-    user = request.user
-	
-    address_id = request.GET.get('address')
-    
-    address = get_object_or_404(Address, id=address_id)
-    # Get all the products of User in Cart
-    cart = Cart.objects.filter(user=user)
-    for c in cart:
-        # Saving all the products from Cart to Order
-        Order(user=user, address=address, product=c.product, quantity=c.quantity).save()
-        # And Deleting from Cart
-        c.delete()
-    return redirect('userauths/orders.html')
+	total_amt=0
+	totalAmt=0
+	if 'cart_data' in request.session:
+		for product_id,item in request.session['cart_data'].items():
+			totalAmt+=int(item['qty'])*float(item['price'])
+		# Order
+		order=CartOrder.objects.create(
+				user=request.user,
+				total_amt=totalAmt
+			)
+		# End
+		for product_id,item in request.session['cart_data'].items():
+			total_amt+=int(item['qty'])*float(item['price'])
+			# OrderItems
+			CartOrderItems=CartOrderItems.objects.create(
+				order=order,
+				invoice_no='invoice_no'+str(order.id),
+				item=item['title'],
+				image=item['image'],
+				qty=item['qty'],
+				price=item['price'],
+				total=float(item['qty'])*float(item['price'])
+				)
+			# End
+	return render(request, 'checkout.html',{'cart_data':request.session['cart_data'],'total_amt':len(request.session['cartdata']),'total_amt':total_amt,})
 
-@login_required
-def orders(request):
-    all_orders = Order.objects.filter(user=request.user).order_by('-ordered_date')
-    return render(request, 'core/orders.html', {'orders': all_orders})
+def contact(request):
+	return render(request, 'core/contact.html')
 
 def ajax_contact_form(request):
 	name = request.GET['name']
@@ -372,45 +371,13 @@ def ajax_contact_form(request):
 
 	return JsonResponse({'data': data})
 
-@login_required
-def profile(request):
-    addresses = Address.objects.filter(user=request.user)
-    orders = Order.objects.filter(user=request.user)
-    return render(request, 'userauths/account.html', {'addresses':addresses, 'orders':orders})
-
-
-@method_decorator(login_required, name='dispatch')
-class AddressView(View):
-    def get(self, request):
-        form = AddressForm()
-        return render(request, 'userauths/add_address.html', {'form': form})
-
-    def post(self, request):
-        form = AddressForm(request.POST)
-        if form.is_valid():
-            user=request.user
-            locality = form.cleaned_data['locality']
-            city = form.cleaned_data['city']
-            state = form.cleaned_data['state']
-            reg = Address(user=user, locality=locality, city=city, state=state)
-            reg.save()
-            messages.success(request, "New Address Added Successfully.")
-        return redirect('core:accounts')
-
-@login_required
-def remove_address(request, id):
-    a = get_object_or_404(Address, user=request.user, id=id)
-    a.delete()
-    messages.success(request, "Address removed.")
-    return redirect('userauths:account')
-
 def about(request):
 	return render(request, 'core/about.html')
 
+@login_required
 def success(request):
 	return render(request, 'core/success.html')
 
-def billing_info(request):	
-	return render(request, 'core/billing_info.html')
-
-
+@login_required
+def checkout(request):
+	return render(request, 'core/checkout.html')

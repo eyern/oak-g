@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.humanize',
 
-    # Thirt Party
+    # Third Party
     'taggit',
     'ckeditor',
     'easyaudit',

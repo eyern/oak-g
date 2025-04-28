@@ -7,7 +7,7 @@ from userauths.models import User
 from userauths.forms import UserRegisterForm
 
 from core.forms import AddressForm
-from core.models import Address, Order
+from core.models import Address, CartOrder, CartOrderItems
 
 from django.contrib import messages
 from django.utils.decorators import method_decorator # for Class Based Views
