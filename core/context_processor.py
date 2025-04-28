@@ -1,6 +1,6 @@
 import random
-from core.models import Product, Category, Vendor, Order, \
-ProductImages, ProductReview, Wishlist, Address
+from core.models import Product, Category, Vendor, CartOrder, \
+CartOrderItems, ProductImages, ProductReview, Wishlist, Address
 from blog.models import Post
 from django.db.models import Min, Max
 from django.contrib import messages
@@ -24,10 +24,10 @@ def core_context(request):
 
 	blog_posts = Post.objects.filter(post_status='published').order_by("-date_created")
 
-	try:
-		address = Address.objects.get(user=request.user)
-	except:
-		address = None
+	# try:
+	# 	address = Address.objects.get(user=request.user)
+	# except:
+	# 	address = None
 
 	cart_total_amount = 0
 	if 'cart_data_object' in request.session:
@@ -38,7 +38,7 @@ def core_context(request):
 		'categories': categories,
 		'vendors': vendors,
 		'wishlist': wishlist,
-		'address': address,
+		# 'address': address,
 		'min_max_price': min_max_price,
 		'cart_total_amount': cart_total_amount,
 		'latest_products': latest_products,
