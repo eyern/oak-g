@@ -67,11 +67,4 @@ urlpatterns = [
     
 	#billing info
     path('billing_info/', views.billing_info, name='billing_info'),
-    
-	#orders
-    path('orders/', views.orders, name='orders'),
-    
-    path('add-address/', views.AddressView.as_view(), name="add-address"),
-    
-    path('remove-address/<int:id>/', views.remove_address, name="remove-address"),
 ]

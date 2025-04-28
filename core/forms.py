@@ -1,5 +1,5 @@
 from django import forms
-from core.models import ProductReview, Address
+from core.models import ProductReview
 
 class ProductReviewFrom(forms.ModelForm):
 	review = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Write review', \
@@ -11,9 +11,3 @@ class ProductReviewFrom(forms.ModelForm):
 	class Meta:
 		model = ProductReview
 		fields = ['review', 'rating']
-
-class AddressForm(forms.ModelForm):
-    class Meta:
-        model = Address
-        fields = ['locality', 'city', 'state']
-        widgets = {'locality':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Popular Places Nearby like Restaurants, etc.'}), 'city':forms.TextInput(attrs={'class':'form-control', 'placeholder':'City / Town'}), 'state':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Phone Number'})}
