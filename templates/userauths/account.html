@@ -41,7 +41,7 @@
                             <i class="fa fa-phone"></i>
                         </div>
                         <div class="hero__search__phone__text">
-                            <h5>0722-900-442</h5>
+                            <h5>0714-314-360</h5>
                             <span>24/7 support</span>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
 <!-- Hero Section End -->
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/img/breadcrumb-2.jpg' %}">
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'assets/img/breadcrumb-1.jpg' %}">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -70,79 +70,8 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-<br>
-<br>
 
-<div class="row">
-
-	<div class="col-lg-6">
-	  <div class="card mb-4" id="headings">
-		<div class="card-header">Addresses <span class="float-right"><a href="{% url 'userauths:add-address' %}">Add Address</a></span></div>
-		<div class="card-body">
-		  {% if addresses %}
-			  {% for address in addresses %}
-				  <h4 class="mb-3">Address {{forloop.counter}}</h4> 
-				  
-				  <span class="float-right"><a href="{% url 'userauths:remove-address' address.id %}"><i class="fas fa-trash-alt small text-muted"></i></a></span>
-
-				  <p>
-					  <strong>Locality: </strong>{{address.locality}} <br>
-					  <strong>City / Town: </strong>{{address.city}} <br>
-					  <strong>Phone Number: </strong>{{address.state}} <br>
-				  </p>
-
-				  <hr>
-			  {% endfor %}
-		  {% else %}
-		  <div class="text-danger">
-			Address not Added.
-		  </div>
-		  {% endif %}
-		  
-		</div>
-	  </div>
-	</div>
-
-	<div class="col-lg-6">
-	  <div class="card mb-4" id="tables">
-		<div class="card-header">Orders</div>
-		<div class="card-body">
-		  <table class="table table-hover">
-			<thead>
-			  <tr>
-				<th>#</th>
-				<th>Item</th>
-				<th>Status</th>
-			  </tr>
-			</thead>
-			<tbody>
-			  {% if orders %}
-				{% for order in orders %}
-				  <tr>
-					<td>{{forloop.counter}}</td>
-					<td>{{order.product.title}}</td>
-					<td>
-					  {{order.status}}
-					</td>
-				  </tr>
-				{% endfor %}
-			  {% else %}
-			  <tr>
-				<td class="text-danger" colspan="3">You've not Ordered anything yet.</td>
-			  </tr>
-			  {% endif %}
-			  
-			  
-			</tbody>
-		  </table>
-		  
-		</div>
-	  </div>
-	</div>
-	
-  </div>
-
-  <!-- Account Section Start -->
+<!-- Account Section Start -->
 <section class="my-5">
 	<div class="container">
 		<!-- <h1 class="mb-5">Account Settings</h1> -->
@@ -218,7 +147,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Phone Number</label>
-								<input name="phone" type="text" class="form-control" value="{{ user.phone }}" placeholder="+2547....">
+								<input name="phone" type="text" class="form-control" value="{{ user.phone }}" placeholder="+254712345678">
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -241,8 +170,8 @@
 						</div> -->
 						<div class="col-md-12">
 							<div class="form-group">
-								<label>Shipping Address</label>
-								<textarea  name="bio" class="form-control" rows="4" placeholder="Enter Shipping Address">{{ user.bio }}</textarea>
+								<label>Bio</label>
+								<textarea  name="bio" class="form-control" rows="4" placeholder="Something About Yourself">{{ user.bio }}</textarea>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -375,12 +304,12 @@
 					</div>
 				</div>
 				<div class="tab-pane fade" id="singout" role="tabpanel" aria-labelledby="singout-tab">
-					<h3 class="mb-4">Sign Out</h3>
+					<h3 class="mb-4">Sing Out</h3>
 					<div class="row">
 						
 					</div>
 					<div>
-						<button class="btn btn-primary">Sign Out</button>
+						<button class="btn btn-primary">Sing Out</button>
 					</div>
 				</div>
 			</div>
